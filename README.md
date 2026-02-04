@@ -1,8 +1,8 @@
-# Uleth CPSC 3660 — PHP + Docker (student repo)
+# Uleth CPSC 3660 — PHP, SQL + Docker
 
 Welcome! This repository provides a Docker-based PHP development environment used in CPSC 3660. The README below explains how to start and stop the environment, and how to access the running PHP instance.
 
-## Quick overview
+## Description
 
 - Purpose: provides a local instance of mysql and php using Docker.
 - PHP instance: available at http://localhost:80
@@ -13,9 +13,11 @@ Welcome! This repository provides a Docker-based PHP development environment use
   4. Visit http://localhost:80 in your browser.
   5. When finished, stop the environment with `docker compose down`.
 
----
 
-## Prerequisites
+The docker compose file will create a directory for your mysql DB in mysql_data. This will be mounted to the docker container to allow persistence. The php files in src are mounted to the php container again to allow for persistence and immediate reflection of updates to the php code.
+## Getting Started
+
+### Dependencies
 
 - Git (optional, to clone the repo)
 - A machine that supports Docker:
@@ -23,90 +25,33 @@ Welcome! This repository provides a Docker-based PHP development environment use
   - macOS (Intel or Apple Silicon)
   - Linux (Ubuntu, Fedora, etc.)
 
----
+### Installing
 
-## Start the environment
+- Docker install instructions can be found on the [official website](https://www.docker.com/get-started/)
 
-From the root of this repository, run:
+1. Make sure docker and docker compose are installed and running
+2. Clone this repo do a location on your computer
+3. Run the following command in the *root folder* of the project
+4. Go to the *.env* file and update both password spots with the *same password*
+```
+docker compose build
+```
 
+### Running the container
+
+To run the container ensure docker is running then simply type the following command in the *root folder* 
 ```
 docker compose up -d
 ```
 
-- This will build (if needed) and start the containers in detached mode.
-- The `-d` runs containers in the background so you can keep using your terminal.
+### Stopping the container
 
-Verify containers are running:
-
-```
-docker ps
-```
-
-Access the application:
-
-- Open your browser at: http://localhost:80
-- The PHP instance is served at port 80 on localhost.
-
----
-
-## Stop the environment
-
-To stop and remove the containers started by Compose:
-
+To stop the container use the following command in the *root folder*
 ```
 docker compose down
 ```
 
-Additional useful commands:
+### Testing status
 
-- View logs (follow):
-  ```
-  docker compose logs -f
-  ```
-- Rebuild images (if you change Dockerfile or dependencies):
-  ```
-  docker compose up -d --build
-  ```
-- Run a shell inside a running container (example service name `php`; replace with actual service name if different):
-  ```
-  docker compose exec php bash
-  ```
-  (If the container uses `sh` only, use `sh` instead of `bash`.)
+To double check if the container is running you can navigate to http://localhost:80 this page will tell you if the connection to mysql is working and also allow you to make sure the php instance is working.
 
----
-
-## Ports and where to look
-
-- PHP / Web: http://localhost:80 (port 80)
-- phpmyadmin is also included on http://localhost:8080 just in case
-
----
-
-## Common issues & troubleshooting
-
-- Port 80 is in use:
-  - Find the process using port 80 and stop it, or change the port mapping in `docker-compose.yml`.
-  - On Linux/macOS:
-    ```
-    sudo lsof -i :80
-    ```
-- Permission denied / can't connect to Docker on Linux:
-  - Make sure you added your user to the `docker` group and re-logged in:
-    ```
-    sudo usermod -aG docker $USER
-    ```
-- `docker compose` not found but `docker-compose` is available:
-  - Use `docker-compose up -d` as a fallback, or install the Compose plugin.
-- Containers not starting or crash-looping:
-  - Check logs:
-    ```
-    docker compose logs -f
-    ```
-  - Remove old volumes (careful, this removes persistent data):
-    ```
-    docker compose down -v
-    ```
-
----
-
-Good luck and happy coding!
